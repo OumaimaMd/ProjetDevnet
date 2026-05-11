@@ -1,0 +1,70 @@
+{% extends 'polytechnicien/layout.html' %}
+{% load static %}
+
+{% block content %}
+<div class="auth-bg">
+  <div class="auth-container">
+    <div class="auth-header">
+      <a href="{% url 'accueil' %}"><h1 class="auth-logo">StudyHub</h1></a>
+      <div class="auth-switch">
+        <a href="{% url 'login' %}">Connexion</a>
+        <a href="{% url 'register' %}" class="active">Inscription</a>
+      </div>
+    </div>
+
+    <form method="post" class="auth-form" autocomplete="off">
+      {% csrf_token %}
+      
+      {% if form.errors %}
+        <div class="alert alert-danger">
+          {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="form-group">
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {{ form.username.errors }}
+      </div>
+
+      <div class="form-group">
+        {{ form.password1.label_tag }}
+        {{ form.password1 }}
+        {{ form.password1.errors }}
+      </div>
+
+      <div class="form-group">
+        {{ form.password2.label_tag }}
+        {{ form.password2 }}
+        {{ form.password2.errors }}
+      </div>
+      
+      <button type="submit" class="auth-btn">
+        <i class="fas fa-user-plus"></i> Créer un compte
+      </button>
+      
+      <div class="auth-footer">
+        Déjà membre ? <a href="{% url 'login' %}" class="auth-link">Se connecter</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function togglePassword(id) {
+  const input = document.getElementById(id);
+  const icon = document.querySelector(`#${id} + .password-toggle i`);
+  if (input.type === "password") {
+    input.type = "text";
+    icon.classList.replace('fa-eye', 'fa-eye-slash');
+  } else {
+    input.type = "password";
+    icon.classList.replace('fa-eye-slash', 'fa-eye');
+  }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'polytechnicien/header.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Tableau de Bord</h1>
+        <div class="user-info">
+            <span>Connecté en tant que <strong>{{ request.user.username }}</strong></span>
+            
+        </div>
+    </div>
+
+    <div class="progress-section">
+        <h2>Vos Progrès</h2>
+        <div class="progress-grid">
+            <div class="progress-card">
+                <h3>Mathématiques</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-bar"></div>
+                    <span class="progress-percent">{{ progress_data.math }}%</span>
+                </div>
+            </div>
+
+            <div class="progress-card">
+                <h3>Physique</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-bar"></div>
+                    <span class="progress-percent">{{ progress_data.physique }}%</span>
+                </div>
+            </div>
+
+            <div class="progress-card">
+                <h3>Langues</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-bar"></div>
+                    <span class="progress-percent">{{ progress_data.langues }}%</span>
+                </div>
+            </div>
+
+            <div class="progress-card">
+                <h3>Informatique</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-bar"></div>
+                    <span class="progress-percent">{{ progress_data.informatique }}%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="courses" id="nos-cours">
+        <h1>Nos Cours</h1>
+        <div class="course-container">
+            <div class="course-card">
+                <img src="{% static 'images/math.png' %}" alt="Mathématiques">
+                <h2>Mathématiques</h2>
+                <p>Développez vos compétences en algèbre, analyse et géométrie.</p>
+                    <a href="{% url 'add_course' %}" class="btn">Réserver</a>
+                
+            </div>
+
+            <div class="course-card">
+                <img src="{% static 'images/physique.png' %}" alt="Physique">
+                <h2>Physique</h2>
+                <p>Comprenez les lois de l'univers à travers nos cours de physique appliquée.</p>
+                <a href="{% url 'add_course' %}" class="btn">Réserver</a>
+            </div>
+
+            <div class="course-card">
+                <img src="{% static 'images/langues.png' %}" alt="Langues">
+                <h2>Langues</h2>
+                <p>Améliorez votre anglais, français ou espagnol avec nos professeurs experts.</p>
+                <a href="{% url 'add_course' %}" class="btn">Réserver</a>
+            </div>
+
+            <div class="course-card">
+                <img src="{% static 'images/informatique.png' %}" alt="Informatique">
+                <h2>Informatique</h2>
+                <p>Initiez-vous au développement web, à l'algorithmique et aux bases de données.</p>
+                <a href="{% url 'add_course' %}" class="btn">Réserver</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="recent-activities">
+        <h2>Activités Récentes</h2>
+        <ul class="activities-list">
+            <li>Terminé le chapitre 3 de Mathématiques</li>
+            <li>Nouveau quiz disponible en Physique</li>
+            <li>Message reçu de votre tuteur en Langues</li>
+            <li>Projet en Informatique à rendre dans 3 jours</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

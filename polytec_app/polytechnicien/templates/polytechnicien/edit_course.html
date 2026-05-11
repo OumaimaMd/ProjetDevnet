@@ -1,0 +1,14 @@
+{% extends 'polytechnicien/header.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Modifier le cours "{{ course.subject }}" (Année: {{ course.year }})</h2>
+    <form method="post" action="{% url 'edit_course' course.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+        <a href="{% url 'course_list' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}

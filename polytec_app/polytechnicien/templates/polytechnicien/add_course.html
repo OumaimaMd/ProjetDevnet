@@ -1,0 +1,57 @@
+{% extends 'polytechnicien/header.html' %}
+
+{% block content %}
+<div class="add-course">
+    <h2>Ajouter un nouveau cours</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.subject.id_for_label }}">Matière:</label>
+            {{ form.subject }}
+            {% if form.subject.errors %}
+                <div class="error">{{ form.subject.errors }}</div>
+            {% endif %}
+            {% if form.subject.help_text %}
+                <small class="form-text text-muted">{{ form.subject.help_text }}</small>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.year.id_for_label }}">Année:</label>
+            {{ form.year }}
+            {% if form.year.errors %}
+                <div class="error">{{ form.year.errors }}</div>
+            {% endif %}
+            {% if form.year.help_text %}
+                <small class="form-text text-muted">{{ form.year.help_text }}</small>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}">Titre:</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+                <div class="error">{{ form.title.errors }}</div>
+            {% endif %}
+            {% if form.title.help_text %}
+                <small class="form-text text-muted">{{ form.title.help_text }}</small>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.description.id_for_label }}">Description:</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+                <div class="error">{{ form.description.errors }}</div>
+            {% endif %}
+            {% if form.description.help_text %}
+                <small class="form-text text-muted">{{ form.description.help_text }}</small>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Ajouter le cours</button>
+        <a href="{% url 'course_list' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}

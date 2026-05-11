@@ -1,0 +1,17 @@
+{% extends 'polytechnicien/layout.html' %}
+{% block content %}
+  <div class="select-subject">
+    <h2>Choisir une matière</h2>
+    
+    <ul>
+      {% for subject in subjects %}
+        <li>
+          <a href="{% url 'select_year' subject %}">{{ subject }}</a>
+        </li>
+      {% empty %}
+        <li>Aucune matière disponible</li>
+      {% endfor %}
+    </ul>
+  </div>
+  
+{% endblock %}

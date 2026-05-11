@@ -1,0 +1,23 @@
+{% extends 'polytechnicien/header.html' %}
+{% load static %}
+{% block content %}
+  <div class="course-resources">
+    <h1>Ressources pour {{ course.title }}</h1>
+    <p class="course-description">{{ course.description }}</p>
+    <a href="{% url 'upload_resource' course.id %}" class="btn btn-primary">Ajouter une ressource</a>
+    <h2>Liste des ressources</h2>
+    {% if resources %}
+        <ul class="resource-list">
+            {% for resource in resources %}
+                <li class="resource-item">
+                    <strong class="resource-title">{{ resource.title }}</strong> -
+                    <a href="{{ resource.file.url }}" target="_blank" class="btn btn-sm btn-secondary">Télécharger</a>
+                    <small class="resource-info">Ajouté par {{ resource.uploaded_by.username }} le {{ resource.uploaded_at|date:"d M Y H:i" }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucune ressource disponible pour ce cours.</p>
+    {% endif %}
+  </div>
+{% endblock %}

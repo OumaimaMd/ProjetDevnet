@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-jQHstzKHdF7zDJK1rG2WyZ8AClZIHLaq2A70aa3I12i79JpyY2nRlUtg0aTwqP6hZohcvvFjqx++9uBfZbXnsg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>StudyHub</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.0">
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo-section" style="display: flex; align-items: center;">
+        <a href="{% url 'accueil' %}">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" style="height: 80px; margin-right: 15px;">
+        </a>
+        
+    </div>
+    <div class="logo">
+        <h1>Ma Plateforme</h1>
+    </div>
+    <div class="nav-buttons">
+        
+        <a href="{% url 'add_course' %}" class="btn">Réserver un cours</a>
+        <a href="{% url 'course_list' %}" class="btn">Liste</a>
+        
+        <a href="{% url 'a_propos' %}" class="btn">A propos</a>
+        <a href="{% url 'logout' %}" class="out-btn">Déconnecter</a>
+    </div>
+</header>
+
+  <main class="content-wrapper">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
