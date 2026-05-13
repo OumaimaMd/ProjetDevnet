@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from .views import CustomLoginView
-from .views import custom_login
+#from .views import custom_login
 urlpatterns = [
     path('', views.accueil, name='accueil'),  # Page d'accueil
     path('home/', views.home, name='home'),  
@@ -18,7 +18,7 @@ urlpatterns = [
     path('reserve/<int:course_id>/', views.reserve_course, name='reserve_course'),
      path('dashboard/add/', views.add_course, name='add_course'),
     path('courses/', views.course_list, name='course_list'),
-     path('login/', custom_login, name='login'),
+     #path('login/', custom_login, name='login'),
     path('courses/edit/<int:course_id>/', views.edit_course, name='edit_course'),  
     path('courses/delete/<int:course_id>/', views.delete_course, name='delete_course'),
     path('edit/<int:course_id>/', views.edit_course_page, name='edit_course_page'),
