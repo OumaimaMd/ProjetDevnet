@@ -9,7 +9,7 @@ from django.contrib.auth.views import LoginView
 
 from .models import Course, CourseForm, Resource, Reservation
 from .forms import AddCourseForm, ResourceForm, CommentForm, RegisterForm, CustomUserCreationForm
-
+import json
 
 # ─────────────────────────────────────────
 # 🌐 Open Library API
@@ -174,27 +174,23 @@ def select_year(request, subject):
 # ─────────────────────────────────────────
 # 📊 Dashboard
 # ─────────────────────────────────────────
-
 @login_required
 def dashboard_view(request):
     reservations = Reservation.objects.filter(user=request.user).select_related('course')
 
-    # Données pour Chart.js (nombre de réservations par matière)
     subjects      = [Course.MATH, Course.PHYS, Course.LANG, Course.INFO]
-    labels        = ['Mathématiques', 'Physique', 'Langues', 'Informatique']
     reserv_counts = [
         reservations.filter(course__subject=s).count()
         for s in subjects
     ]
 
     context = {
-        'reservations':   reservations,
-        'total_cours':    reservations.count(),
-        'chart_labels':   labels,
-        'chart_data':     reserv_counts,
+        'reservations': reservations,
+        'total_cours':  reservations.count(),
+        'chart_labels': json.dumps(['Mathématiques', 'Physique', 'Langues', 'Informatique']),
+        'chart_data':   json.dumps(reserv_counts),
     }
     return render(request, 'polytechnicien/dashboard.html', context)
-
 
 # ─────────────────────────────────────────
 # 🔐 Auth

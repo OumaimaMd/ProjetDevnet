@@ -7,9 +7,16 @@
         <h1>Tableau de Bord</h1>
         <div class="user-info">
             <span>Connecté en tant que <strong>{{ request.user.username }}</strong></span>
-            
         </div>
     </div>
+
+    <!-- ────── 📊 Graphique Chart.js ────── -->
+    <div class="chart-section" style="margin: 30px 0; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <h2>📊 Vos Réservations par Matière</h2>
+        <p style="color: gray; font-size: 0.9em;">Total : {{ total_cours }} cours réservé(s)</p>
+        <canvas id="reservationsChart" style="max-height: 300px;"></canvas>
+    </div>
+    <!-- ─────────────────────────────────── -->
 
     <div class="progress-section">
         <h2>Vos Progrès</h2>
@@ -21,7 +28,6 @@
                     <span class="progress-percent">{{ progress_data.math }}%</span>
                 </div>
             </div>
-
             <div class="progress-card">
                 <h3>Physique</h3>
                 <div class="progress-bar-container">
@@ -29,7 +35,6 @@
                     <span class="progress-percent">{{ progress_data.physique }}%</span>
                 </div>
             </div>
-
             <div class="progress-card">
                 <h3>Langues</h3>
                 <div class="progress-bar-container">
@@ -37,7 +42,6 @@
                     <span class="progress-percent">{{ progress_data.langues }}%</span>
                 </div>
             </div>
-
             <div class="progress-card">
                 <h3>Informatique</h3>
                 <div class="progress-bar-container">
@@ -55,24 +59,20 @@
                 <img src="{% static 'images/math.png' %}" alt="Mathématiques">
                 <h2>Mathématiques</h2>
                 <p>Développez vos compétences en algèbre, analyse et géométrie.</p>
-                    <a href="{% url 'add_course' %}" class="btn">Réserver</a>
-                
+                <a href="{% url 'add_course' %}" class="btn">Réserver</a>
             </div>
-
             <div class="course-card">
                 <img src="{% static 'images/physique.png' %}" alt="Physique">
                 <h2>Physique</h2>
                 <p>Comprenez les lois de l'univers à travers nos cours de physique appliquée.</p>
                 <a href="{% url 'add_course' %}" class="btn">Réserver</a>
             </div>
-
             <div class="course-card">
                 <img src="{% static 'images/langues.png' %}" alt="Langues">
                 <h2>Langues</h2>
                 <p>Améliorez votre anglais, français ou espagnol avec nos professeurs experts.</p>
                 <a href="{% url 'add_course' %}" class="btn">Réserver</a>
             </div>
-
             <div class="course-card">
                 <img src="{% static 'images/informatique.png' %}" alt="Informatique">
                 <h2>Informatique</h2>
@@ -82,14 +82,59 @@
         </div>
     </section>
 
-    <div class="recent-activities">
-        <h2>Activités Récentes</h2>
-        <ul class="activities-list">
-            <li>Terminé le chapitre 3 de Mathématiques</li>
-            <li>Nouveau quiz disponible en Physique</li>
-            <li>Message reçu de votre tuteur en Langues</li>
-            <li>Projet en Informatique à rendre dans 3 jours</li>
-        </ul>
+    <!-- ────── Cours réservés ────── -->
+    <div class="recent-activities" style="margin-top: 30px;">
+        <h2>Vos Cours Réservés</h2>
+        {% if reservations %}
+            <ul class="activities-list">
+                {% for reservation in reservations %}
+                    <li>📚 {{ reservation.course.title }} — {{ reservation.course.get_subject_display }} — Réservé le {{ reservation.reserved_at|date:"d M Y" }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Vous n'avez pas encore réservé de cours.</p>
+        {% endif %}
     </div>
+    <!-- ───────────────────────────── -->
+
 </div>
+
+<!-- ────── Chart.js CDN ────── -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const chartLabels = {{ chart_labels|safe }};
+    const chartData   = {{ chart_data|safe }};
+
+    const ctx = document.getElementById('reservationsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'Nombre de réservations',
+                data: chartData,
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(255, 206, 86, 0.7)'
+                ],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+</script>
+
 {% endblock %}

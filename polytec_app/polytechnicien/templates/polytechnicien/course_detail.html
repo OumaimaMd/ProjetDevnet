@@ -1,23 +1,126 @@
 {% extends 'polytechnicien/header.html' %}
 {% load static %}
 {% block content %}
-  <div class="course-resources">
-    <h1>Ressources pour {{ course.title }}</h1>
-    <p class="course-description">{{ course.description }}</p>
-    <a href="{% url 'upload_resource' course.id %}" class="btn btn-primary">Ajouter une ressource</a>
-    <h2>Liste des ressources</h2>
-    {% if resources %}
-        <ul class="resource-list">
-            {% for resource in resources %}
-                <li class="resource-item">
-                    <strong class="resource-title">{{ resource.title }}</strong> -
-                    <a href="{{ resource.file.url }}" target="_blank" class="btn btn-sm btn-secondary">Télécharger</a>
-                    <small class="resource-info">Ajouté par {{ resource.uploaded_by.username }} le {{ resource.uploaded_at|date:"d M Y H:i" }}</small>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Aucune ressource disponible pour ce cours.</p>
-    {% endif %}
-  </div>
+
+<div class="page-container">
+
+  <!-- En-tête du cours -->
+  <div class="course-hero">
+    <div class="course-hero-content">
+      <span class="hero-badge">{{ course.get_subject_display }}</span>
+      <h1 class="hero-title">{{ course.title }}</h1>
+      <p class="hero-desc">{{ course.description }}</p>
+      <div class="hero-actions">
+        <a href="{% url 'reserve_course' course.id %}" class="btn-reserve-hero">✅ Réserver ce cours</a>
+        <a href="{% url 'upload_resource' course.id %}" class="btn-upload-hero">📎 Ajouter une ressource</a>
+        <a href="{% url 'course_list' %}" class="btn-back-hero">← Retour</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-grid">
+
+    <!-- Ressources -->
+    <div class="detail-card">
+      <h2 class="section-title">📁 Ressources du cours</h2>
+      {% if resources %}
+        <ul class="resource-list-new">
+          {% for resource in resources %}
+          <li class="resource-item-new">
+            <div class="resource-info-new">
+              <span class="resource-icon">📄</span>
+              <div>
+                <strong>{{ resource.title }}</strong>
+                <small>Ajouté par {{ resource.uploaded_by.username }} · {{ resource.uploaded_at|date:"d M Y" }}</small>
+              </div>
+            </div>
+            <a href="{{ resource.file.url }}" target="_blank" class="btn-download">⬇ Télécharger</a>
+          </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="empty-resources">
+          <p>📭 Aucune ressource disponible.</p>
+          <a href="{% url 'upload_resource' course.id %}" class="btn-primary-main">Ajouter la première ressource</a>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Livres API -->
+    <div class="detail-card">
+      <h2 class="section-title">📚 Livres recommandés</h2>
+      <p class="api-source">Source : <strong>Open Library API</strong></p>
+      {% if books %}
+        <div class="books-grid-new">
+          {% for book in books %}
+          <div class="book-item">
+            {% if book.cover %}
+              <img src="{{ book.cover }}" alt="{{ book.title }}" class="book-cover">
+            {% else %}
+              <div class="book-cover-placeholder">📖</div>
+            {% endif %}
+            <div class="book-info">
+              <h4 class="book-title">{{ book.title }}</h4>
+              <p class="book-author">✍️ {{ book.author }}</p>
+              <a href="{{ book.url }}" target="_blank" class="book-link">Voir sur Open Library →</a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="empty-books">Aucun livre trouvé pour cette matière.</p>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+
+<style>
+.page-container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+
+/* Hero */
+.course-hero { background: linear-gradient(135deg, #4361ee, #3a0ca3); border-radius: 16px; padding: 40px; color: white; margin-bottom: 30px; }
+.hero-badge { background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 20px; font-size: 0.82em; font-weight: 600; letter-spacing: 0.5px; }
+.hero-title { font-size: 2em; font-weight: 800; margin: 12px 0 10px; }
+.hero-desc { opacity: 0.85; line-height: 1.6; margin-bottom: 20px; max-width: 600px; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-reserve-hero { background: #2ec4b6; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9em; }
+.btn-upload-hero  { background: rgba(255,255,255,0.15); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9em; border: 1px solid rgba(255,255,255,0.3); }
+.btn-back-hero    { background: transparent; color: rgba(255,255,255,0.7); padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 0.9em; }
+.btn-reserve-hero:hover { background: #25a99e; }
+
+/* Grid */
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 768px) { .detail-grid { grid-template-columns: 1fr; } }
+
+/* Cards */
+.detail-card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.section-title { font-size: 1.1em; font-weight: 700; color: #1a1a2e; margin: 0 0 16px; padding-bottom: 12px; border-bottom: 2px solid #f0f0f0; }
+.api-source { color: #888; font-size: 0.82em; margin: -10px 0 15px; }
+
+/* Resources */
+.resource-list-new { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.resource-item-new { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 8px; gap: 10px; }
+.resource-info-new { display: flex; align-items: center; gap: 10px; }
+.resource-icon { font-size: 1.4em; }
+.resource-info-new strong { display: block; font-size: 0.9em; color: #1a1a2e; }
+.resource-info-new small { color: #888; font-size: 0.78em; }
+.btn-download { background: #4361ee; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.8em; white-space: nowrap; }
+.btn-download:hover { background: #3451d1; }
+.empty-resources { text-align: center; padding: 30px; color: #888; }
+.btn-primary-main { background: #4361ee; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 0.85em; font-weight: 600; }
+
+/* Books */
+.books-grid-new { display: flex; flex-direction: column; gap: 12px; }
+.book-item { display: flex; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; align-items: flex-start; }
+.book-cover { width: 60px; height: 80px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+.book-cover-placeholder { width: 60px; height: 80px; background: #e0e0e0; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.8em; flex-shrink: 0; }
+.book-info { flex: 1; }
+.book-title { font-size: 0.88em; font-weight: 700; color: #1a1a2e; margin: 0 0 4px; line-height: 1.3; }
+.book-author { color: #888; font-size: 0.78em; margin: 0 0 6px; }
+.book-link { color: #4361ee; font-size: 0.78em; text-decoration: none; font-weight: 600; }
+.book-link:hover { text-decoration: underline; }
+.empty-books { color: #888; text-align: center; padding: 20px; }
+</style>
+
 {% endblock %}
