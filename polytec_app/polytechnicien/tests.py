@@ -4,9 +4,7 @@ from .models import Course, CustomUser, Reservation
 import requests
 
 
-# ─────────────────────────────────────────
-# 🗃️ Tests des modèles
-# ─────────────────────────────────────────
+# Tests des modèles
 
 class CourseModelTest(TestCase):
 
@@ -45,9 +43,8 @@ class UserModelTest(TestCase):
         self.assertTrue(self.user.is_active)
 
 
-# ─────────────────────────────────────────
-# 🌐 Tests des vues
-# ─────────────────────────────────────────
+# Tests des vues
+
 
 class ViewsTest(TestCase):
 
@@ -91,9 +88,7 @@ class ViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-# ─────────────────────────────────────────
-# 🔗 Tests connectivité API
-# ─────────────────────────────────────────
+# Tests connectivité API
 
 class APIConnectivityTest(TestCase):
 
@@ -122,9 +117,7 @@ class APIConnectivityTest(TestCase):
             self.skipTest("API non accessible depuis cet environnement")
 
 
-# ─────────────────────────────────────────
-# 🎓 Tests des réservations
-# ─────────────────────────────────────────
+#  Tests des réservations
 
 class ReservationTest(TestCase):
 

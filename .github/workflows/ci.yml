@@ -1,14 +1,14 @@
-name: EduTrack CI/CD
+name: EduTrack CI/CD # Nom du pipeline affiché sur GitHub
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master ] #Se déclenche automatiquement à chaque push sur les branches main ou master
   pull_request:
     branches: [ main, master ]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # GitHub crée une machine Ubuntu dans le cloud
     defaults:          
       run:             
         working-directory: polytec_app  
@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Récupérer le code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4  # Télécharge mon code depuis GitHub
 
       - name: Installer Python 3.11
         uses: actions/setup-python@v5
@@ -43,6 +43,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Configurer les variables d'environnement
+      # Crée un fichier .env temporaire pour les tests
         run: |
           echo "SECRET_KEY=django-insecure-test-key-for-ci" >> .env
           echo "DEBUG=True" >> .env

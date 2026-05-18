@@ -11,9 +11,8 @@ from .models import Course, CourseForm, Resource, Reservation
 from .forms import AddCourseForm, ResourceForm, CommentForm, RegisterForm, CustomUserCreationForm
 import json
 
-# ─────────────────────────────────────────
-# 🌐 Open Library API
-# ─────────────────────────────────────────
+# Open Library API
+
 
 SUBJECT_MAP = {
     'Math':     'mathematics',
@@ -45,9 +44,8 @@ def get_books_from_api(subject):
     return []
 
 
-# ─────────────────────────────────────────
-# 🏠 Pages générales
-# ─────────────────────────────────────────
+# Pages générales
+
 
 def home(request):
     courses = Course.objects.all()
@@ -72,18 +70,17 @@ def a_propos(request):
     return render(request, 'polytechnicien/a_propos.html')
 
 
-# ─────────────────────────────────────────
-# 📚 Cours
-# ─────────────────────────────────────────
+#  Cours
+
 
 def course_detail(request, course_id):
     course    = get_object_or_404(Course, id=course_id)
     resources = Resource.objects.filter(course=course)
-    books     = get_books_from_api(course.subject)   # ← Open Library API
+    books     = get_books_from_api(course.subject)   #Open Library API
     context   = {
         'course':    course,
         'resources': resources,
-        'books':     books,               # ← livres disponibles
+        'books':     books,               #livres disponibles
     }
     return render(request, 'polytechnicien/course_detail.html', context)
 
@@ -129,9 +126,8 @@ def delete_course(request, course_id):
     return redirect(reverse('course_list'))
 
 
-# ─────────────────────────────────────────
-# 📁 Ressources
-# ─────────────────────────────────────────
+#  Ressources
+
 
 @login_required
 def upload_resource(request, course_id):
@@ -149,9 +145,8 @@ def upload_resource(request, course_id):
     return render(request, 'polytechnicien/upload_resource.html', {'form': form, 'course': course})
 
 
-# ─────────────────────────────────────────
-# 🎓 Réservation
-# ─────────────────────────────────────────
+#  Réservation
+
 
 @login_required
 def reserve_course(request, course_id):
@@ -170,10 +165,8 @@ def select_year(request, subject):
     years = Course.objects.filter(subject=subject).values_list('year', flat=True).distinct()
     return render(request, 'polytechnicien/select_year.html', {'subject': subject, 'years': years})
 
+# Dashboard
 
-# ─────────────────────────────────────────
-# 📊 Dashboard
-# ─────────────────────────────────────────
 @login_required
 def dashboard_view(request):
     reservations = Reservation.objects.filter(user=request.user).select_related('course')
